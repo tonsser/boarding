@@ -69,6 +69,7 @@ class InviteController < ApplicationController
     end
 
     logger.info "Creating a new tester: #{email} - #{first_name} #{last_name}"
+    notify(email, first_name, last_name)
 
     begin
       create_and_add_tester(email, first_name, last_name)
@@ -116,5 +117,11 @@ class InviteController < ApplicationController
         @message = boarding_service.itc_closed_text
         @type = "warning"
       end
+    end
+
+    def notify(email, first_name, last_name)
+      uri = URI.parse("https://hooks.slack.com/services/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")
+      params = {"text" => "<@ios-developers>: #{first_name} #{last_name} (#{email}) signed up as external tester on <https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/963163548/testflight?section=group&subsection=testers&id=06575b9d-b785-47bc-936d-8a93d87285fb|iTunes Connect>", "channel" => "#ios-bots", "username" => "Business Bot", "icon_emoji" => ":man_in_business_suit_levitating:"}
+      res = Net::HTTP.post_form(uri, {"payload" => params.to_json})
     end
 end
