@@ -16,11 +16,16 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 
 # Added by Felix
-gem 'fastlane', '>= 2.53.1', '< 3.0.0'
+gem 'fastlane', '>= 2.86.2', '< 3.0.0'
 
 gem 'bootstrap-sass', '~> 3.3.5'
 
+# nokogiri 1.8.1 seems to be problematic
+gem 'nokogiri', '>= 1.8.1', '< 2.0.0'
+
 gem 'http_accept_language', '~> 2.0.5'
+
+gem 'dotenv'
 
 group :production do
   gem 'puma'
@@ -31,9 +36,11 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  gem 'web-console', '~> 2.0'
 end

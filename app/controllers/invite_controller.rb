@@ -2,6 +2,7 @@ require 'spaceship'
 class InviteController < ApplicationController
   before_action :set_app_details
   before_action :check_disabled_text
+  before_action :check_imprint_url
 
   skip_before_filter :verify_authenticity_token
 
@@ -124,5 +125,11 @@ class InviteController < ApplicationController
       uri = URI.parse("https://hooks.slack.com/services/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")
       params = {"text" => "<!channel>: #{first_name} #{last_name} (#{email}) signed up as external tester on <https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/963163548/testflight?section=group&subsection=testers&id=06575b9d-b785-47bc-936d-8a93d87285fb|iTunes Connect>", "channel" => "#ios-bots", "username" => "Business Bot", "icon_emoji" => ":man_in_business_suit_levitating:"}
       res = Net::HTTP.post_form(uri, {"payload" => params.to_json})
+    end
+    
+    def check_imprint_url
+      if boarding_service.imprint_url
+        @imprint_url = boarding_service.imprint_url
+      end
     end
 end
